@@ -96,9 +96,34 @@ tbody tr:hover td{background:var(--bg)}
 .empty{padding:22px;text-align:center;color:var(--ink2);font-size:13px}
 footer{max-width:1320px;margin:0 auto;padding:0 20px 24px;color:var(--ink3);font-size:12px}
 
+[hidden]{display:none!important}
+/* funnel */
+.funnel{height:260px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.fr{display:grid;grid-template-columns:96px 1fr 128px;align-items:center;gap:12px;height:52px}
+.fr .fl{font-size:12.5px;color:var(--ink2);text-align:right}
+.fr .fs{height:100%;position:relative}
+.fr .fs i{position:absolute;inset:0;display:block}
+.fr .fv{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.15}
+.fr .fv small{display:block;font-size:11.5px;font-weight:400;color:var(--ink2)}
+.ftot{font-size:12px;color:var(--ink2);text-align:center;margin-top:4px}
+.ftot b{color:var(--brand);font-weight:600}
+@media(max-width:640px){.fr{grid-template-columns:72px 1fr 92px;gap:8px}.fr .fv{font-size:14px}}
+/* KPI tab */
+.seg{display:inline-flex;gap:4px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:14px;flex-wrap:wrap}
+.seg button{border:none;background:none;font-family:inherit;font-size:13px;font-weight:500;color:var(--ink2);padding:7px 14px;border-radius:7px;cursor:pointer}
+.seg button.on{background:var(--brand);color:#fff}
+.seg-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.seg-row .note{font-size:12px;color:var(--ink2);margin-bottom:14px}
+.prog{display:inline-block;width:70px;height:6px;border-radius:3px;background:var(--chip);vertical-align:middle;margin-right:8px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--brand)}
+.st{display:inline-block;font-size:11.5px;padding:1px 8px;border-radius:999px;font-weight:500}
+.st.ok{background:rgba(46,139,87,.14);color:var(--good)}.st.mid{background:var(--chip);color:var(--ink2)}.st.low{background:var(--brand-soft);color:var(--brand-d)}
+.spark{vertical-align:middle}
+td.wrap{white-space:normal;min-width:180px}
+td .hint{display:block;font-size:11.5px;color:var(--ink3)}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.kpi:nth-child(4){border-left:none}.kpi:nth-child(n+4){border-top:1px solid var(--border)}
   .c4,.c5,.c6,.c7,.c8{grid-column:span 12}}
-@media(max-width:640px){.topbar{padding:10px 14px;gap:10px}.logo img{height:24px}.nav{width:100%;order:3}.nav button{flex:1 1 0;justify-content:center;padding:8px 6px;font-size:12px}
+@media(max-width:640px){.topbar{padding:10px 14px;gap:10px}.logo img{height:24px}.nav{width:100%;order:3;overflow-x:auto}.nav button{flex:1 1 0;justify-content:center;padding:8px 6px;font-size:12px}
   .nav svg{display:none}.filters,main,footer{padding-left:14px;padding-right:14px}
   .kpis{grid-template-columns:repeat(2,1fr)}.kpi{border-left:none!important;border-top:1px solid var(--border)}.kpi:first-child{grid-column:span 2;border-top:none}
   .kpi .v{font-size:22px}.ch{height:240px}}
@@ -124,6 +149,9 @@ footer{max-width:1320px;margin:0 auto;padding:0 20px 24px;color:var(--ink3);font
     <button data-p="p3" role="tab" aria-selected="false">
       <svg viewBox="0 0 24 24"><path d="M3 8.5 12 4l9 4.5-9 4.5z"/><path d="M7 10.5v4.8c1.4 1.3 3 2 5 2s3.6-.7 5-2v-4.8"/></svg>
       Tình hình giảng dạy</button>
+    <button data-p="p4" role="tab" aria-selected="false">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg>
+      Quản lý KPI</button>
   </div>
 </div>
 
@@ -183,6 +211,23 @@ footer{max-width:1320px;margin:0 auto;padding:0 20px 24px;color:var(--ink3);font
           <button class="toggle" id="onlyWarn" aria-pressed="false">Chỉ hiện người cần chú ý</button></div>
         <div class="tw" id="t3"></div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 4 ============ -->
+  <section class="page" id="p4">
+    <p class="lead">Mức hoàn thành KPI của Marketing, Kinh doanh và Nhân sự: chỉ tiêu nào đạt, chỉ tiêu nào hụt, và cá nhân nào cần hỗ trợ.</p>
+    <div class="kpis" id="k4"></div>
+    <div class="grid">
+      <div class="card c6"><h3>Mức hoàn thành KPI 6 tháng</h3><p class="sub">Điểm KPI có trọng số của từng phòng, mốc 100% là đạt</p><div class="ch"><canvas id="c4a"></canvas></div></div>
+      <div class="card c6"><h3 id="c4bT"></h3><p class="sub" id="c4bS"></p><div class="ch" id="c4bBox"><canvas id="c4b"></canvas></div><div class="funnel" id="c4bF" hidden></div></div>
+    </div>
+    <div class="seg-row"><div class="seg" id="deptSeg"></div><div class="note" id="deptNote"></div></div>
+    <div class="grid">
+      <div class="card c12"><h3 id="t4aT">Bảng chỉ tiêu</h3><p class="sub">Hoàn thành tính tối đa 120% mỗi chỉ tiêu. Đạt từ 100%, gần đạt từ 85%. Xu hướng là 6 tháng gần nhất.</p><div class="tw" id="t4a"></div></div>
+    </div>
+    <div class="grid">
+      <div class="card c12"><h3 id="t4bT">KPI cá nhân</h3><p class="sub" id="t4bS"></p><div class="tw" id="t4b"></div></div>
     </div>
   </section>
 </main>
@@ -308,7 +353,7 @@ const pct=(v,d=0)=>fmt(v*100,d)+'%';
 const dmy=d=>d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-const state={m:MONTHS.length-1,b:'',tab:'p1',onlyWarn:false};
+const state={m:MONTHS.length-1,b:'',tab:'p1',onlyWarn:false,dept:'mkt'};
 const inBranch=e=>!state.b||e.branch===state.b;
 const empsEnd=M=>EMP.filter(e=>inBranch(e)&&activeEnd(e,M));
 const empsIn=M=>EMP.filter(e=>inBranch(e)&&activeIn(e,M));
@@ -473,9 +518,143 @@ function renderP3(){
     rows,{sortKey:'h',empty:'Không có ai cần chú ý trong tháng này.'});
 }
 
+/* ================= PHỄU (SVG/CSS) ================= */
+function funnel(st){
+  const max=st[0][1]||1,w=st.map(s=>Math.max(.2,s[1]/max)*100);
+  const fills=[css('--grey'),css('--orange2'),css('--orange2'),css('--brand')],op=[1,.75,1,1];
+  $('#c4bF').innerHTML=st.map((s,i)=>{
+    const t=w[i],b=i<st.length-1?w[i+1]:w[i]*.82;
+    const poly=`polygon(${50-t/2}% 0,${50+t/2}% 0,${50+b/2}% 100%,${50-b/2}% 100%)`;
+    const conv=i?`Chuyển đổi ${pct(s[1]/st[i-1][1])}`:'Điểm bắt đầu';
+    return`<div class="fr"><div class="fl">${s[0]}</div><div class="fs" title="${s[0]}: ${fmt(s[1])} người"><i style="clip-path:${poly};background:${fills[i]};opacity:${op[i]}"></i></div><div class="fv">${fmt(s[1])}<small>${conv}</small></div></div>`;
+  }).join('')+`<div class="ftot">Chuyển đổi toàn phễu: <b>${pct(st[st.length-1][1]/max,1)}</b> lead thành học viên</div>`;
+}
+
+/* ================= TAB 4: QUẢN LÝ KPI ================= */
+// lower:true = càng thấp càng tốt; vol:true = chỉ tiêu theo số lượng, chia được theo chi nhánh
+const DEPTS={
+ mkt:{name:'Marketing',kpis:[
+  {k:'lead',t:'Số lead mới',u:'lead',tg:900,w:30,vol:1,base:.95,sd:.12,d:0},
+  {k:'cpl',t:'Chi phí trên mỗi lead',u:'nghìn đ',tg:180,w:20,lower:1,base:1.04,sd:.1,d:0},
+  {k:'l2t',t:'Tỷ lệ lead đăng ký test đầu vào',u:'%',tg:35,w:20,base:.95,sd:.08,d:1},
+  {k:'ws',t:'Người tham dự workshop / sự kiện',u:'người',tg:250,w:15,vol:1,base:1,sd:.18,d:0},
+  {k:'org',t:'Tỷ trọng lead từ kênh tự nhiên',u:'%',tg:40,w:15,base:.9,sd:.08,d:1}]},
+ kd:{name:'Kinh doanh',kpis:[
+  {k:'rev',t:'Doanh số học viên mới',u:'triệu đ',tg:3200,w:40,vol:1,base:.96,sd:.1,d:0},
+  {k:'stu',t:'Số học viên đăng ký mới',u:'học viên',tg:180,w:20,vol:1,base:.97,sd:.1,d:0},
+  {k:'cr',t:'Tỷ lệ chốt sau test đầu vào',u:'%',tg:45,w:20,base:.95,sd:.07,d:1},
+  {k:'ren',t:'Doanh số tái tục',u:'triệu đ',tg:1100,w:20,vol:1,base:.98,sd:.09,d:0}]},
+ hr:{name:'Nhân sự',kpis:[
+  {k:'fill',t:'Hoàn thành kế hoạch tuyển dụng',u:'%',tg:90,w:30,base:.93,sd:.09,d:0},
+  {k:'tth',t:'Thời gian tuyển bình quân',u:'ngày',tg:25,w:20,lower:1,base:1.08,sd:.12,d:0},
+  {k:'turn',t:'Tỷ lệ nghỉ việc trong tháng',u:'%',tg:3,w:20,lower:1,real:1,d:1},
+  {k:'prob',t:'Tỷ lệ nhân sự mới qua thử việc',u:'%',tg:85,w:15,base:.97,sd:.07,d:0},
+  {k:'trn',t:'Giờ đào tạo bình quân / nhân sự',u:'giờ',tg:4,w:15,base:.9,sd:.2,d:1}]}
+};
+const DKEYS=['mkt','kd','hr'];
+const BR_SHARE={'Phạm Hùng':.42,'Tràng Thi':.33,'Quận 3':.25};
+const SEASON={4:.95,5:1,6:1.1,7:1.12,8:.98,9:1.08};
+function hirePlan(M,b){
+  const hired=GKEYS.map(g=>EMP.filter(e=>(!b||e.branch===b)&&e.g===g&&e.hire>=M.start&&e.hire<=M.end).length);
+  const plan=GKEYS.map((g,i)=>{const r=rng('plan'+g+M.i+(b||''));return hired[i]+(r()<.3?1:0)});
+  return{hired,plan}}
+function turnover(M,b){const f=e=>!b||e.branch===b;
+  const lv=EMP.filter(e=>f(e)&&e.leave&&e.leave>=M.start&&e.leave<=M.end).length;
+  const s=EMP.filter(e=>f(e)&&e.hire<M.start&&(!e.leave||e.leave>=M.start)).length,en=EMP.filter(e=>f(e)&&activeEnd(e,M)).length;
+  return lv/((s+en)/2||1)*100}
+function kpiVal(dk,K,M,b){
+  if(K.real)return{tg:K.tg,ac:turnover(M,b)};
+  if(K.k==='fill'){const h=hirePlan(M,b),p=h.plan.reduce((a,c)=>a+c,0),d=h.hired.reduce((a,c)=>a+c,0);return{tg:K.tg,ac:p?d/p*100:100}}
+  const r=rng(dk+K.k+M.i+(b||'all'));
+  let ratio=K.base+(r()-.5)*2*K.sd;
+  if(K.vol){ratio*=SEASON[M.m];if(dk==='kd'&&M.m===9)ratio*=1.03}
+  if(b&&K.vol)ratio*=1+(r()-.5)*.16;
+  const share=(b&&K.vol)?BR_SHARE[b]:1,tg=K.tg*share;
+  return{tg,ac:K.lower?tg*ratio:tg*ratio};
+}
+const comp=(K,v)=>Math.round(Math.min(1.2,K.lower?v.tg/v.ac:v.ac/v.tg)*100)/100;
+function deptScore(dk,M,b){const D=DEPTS[dk];return D.kpis.reduce((a,K)=>a+comp(K,kpiVal(dk,K,M,b))*K.w,0)/100}
+const status=c=>c>=1?'<span class="st ok">Đạt</span>':c>=.85?'<span class="st mid">Gần đạt</span>':'<span class="st low">Chưa đạt</span>';
+const grade=c=>c>=1?'A':c>=.85?'B':'C';
+function spark(vals){
+  const w=86,h=24,mn=Math.min(.7,...vals),mx=Math.max(1.2,...vals),y=v=>h-2-(v-mn)/(mx-mn)*(h-4),x=i=>2+i*(w-4)/(vals.length-1);
+  const pts=vals.map((v,i)=>x(i).toFixed(1)+','+y(v).toFixed(1)).join(' ');
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><line x1="0" x2="${w}" y1="${y(1)}" y2="${y(1)}" stroke="${css('--border')}" stroke-dasharray="3 3"/><polyline points="${pts}" fill="none" stroke="${css('--ink2')}" stroke-width="1.5"/><circle cx="${x(vals.length-1)}" cy="${y(vals[vals.length-1])}" r="2.6" fill="${css('--brand')}"/></svg>`;
+}
+const fmtK=(K,v)=>K.u==='%'?fmt(v,K.d)+'%':fmt(v,K.d)+' '+K.u;
+// KPI cá nhân
+function people(dk,M){
+  const role={mkt:['Marketing'],kd:['Tư vấn tuyển sinh'],hr:['Nhân sự']}[dk];
+  return empsIn(M).filter(e=>role.includes(e.role)).map(e=>{
+    const r=rng('ind'+e.id+M.i),trait=(hash(e.id)%100)/100-.5,o=rec(e,M);
+    const c=clamp(.93+trait*.35+(r()-.5)*.22,.45,1.25)*Math.min(1,o.frac+.15);
+    const row={name:e.name,role:e.role,br:e.branch,c};
+    if(dk==='kd'){row.tg=Math.round(260*o.frac);row.ac=Math.round(row.tg*c);row.stu=Math.round(row.ac/17.5);row.cr=clamp(.45*c+(r()-.5)*.08,.2,.7)}
+    else{row.n=dk==='mkt'?5:5;row.ok=Math.round(clamp(c,0,1.2)/1.2*row.n+(r()-.5))}
+    row.ok=row.ok!=null?clamp(row.ok,0,row.n):null;
+    return row;
+  });
+}
+function renderP4(){
+  const M=MONTHS[state.m],P=MONTHS[state.m-1],b=state.b;
+  const cells=DKEYS.map(dk=>{const c=deptScore(dk,M,b),p=P?deptScore(dk,P,b):null;
+    return{l:'Điểm KPI '+DEPTS[dk].name,v:pct(c,0),d:delta(c*100,p&&p*100,{pctMode:false,unit:' điểm %',d:1})}});
+  let tot=0,ok=0;DKEYS.forEach(dk=>DEPTS[dk].kpis.forEach(K=>{tot++;if(comp(K,kpiVal(dk,K,M,b))>=1)ok++}));
+  const ppl=DKEYS.flatMap(dk=>people(dk,M)),lowP=ppl.filter(p=>p.c<.85).length;
+  kpis('#k4',[{l:'Chỉ tiêu đã đạt',v:ok+'/'+tot,u:'chỉ tiêu',d:`Tỷ lệ đạt ${pct(ok/tot)} trên cả 3 phòng`},...cells,
+    {l:'Cá nhân xếp loại C',v:fmt(lowP),u:'người',d:`Trên ${ppl.length} người được đánh giá`}]);
+  const C=seriesColors();
+  mk('c4a',{type:'line',data:{labels:MONTHS.map(m=>m.short),datasets:[
+    ...DKEYS.map((dk,i)=>({label:DEPTS[dk].name,data:MONTHS.map(m=>+(deptScore(dk,m,b)*100).toFixed(1)),borderColor:[C[0],C[1],C[2]][i],backgroundColor:[C[0],C[1],C[2]][i],tension:.3,pointRadius:3,borderWidth:2})),
+    {label:'Mốc đạt',data:MONTHS.map(()=>100),borderColor:C[4],borderDash:[5,4],borderWidth:1,pointRadius:0}]},
+    options:{plugins:{tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmt(c.raw,1)}%`}}},scales:{x:gridless,y:{min:60,max:120,ticks:{callback:v=>v+'%'}}}}});
+  renderDept();
+}
+function renderDept(){
+  const M=MONTHS[state.m],b=state.b,dk=state.dept,D=DEPTS[dk],C=seriesColors();
+  $('#deptSeg').innerHTML=DKEYS.map(k=>`<button data-d="${k}" class="${k===dk?'on':''}" aria-pressed="${k===dk}">${DEPTS[k].name}</button>`).join('');
+  $('#deptSeg').querySelectorAll('button').forEach(x=>x.onclick=()=>{state.dept=x.dataset.d;renderDept()});
+  $('#deptNote').textContent=b?'Chỉ tiêu số lượng được chia theo chi nhánh; chỉ tiêu tỷ lệ giữ nguyên mốc của công ty.':'';
+  $('#t4aT').textContent='Bảng chỉ tiêu '+D.name+' — '+M.label;
+  const rows=D.kpis.map(K=>{const v=kpiVal(dk,K,M,b),c=comp(K,v);
+    return{t:K.t,lower:K.lower,w:K.w,tg:v.tg,ac:v.ac,c,K,tr:MONTHS.slice(0,state.m+1).slice(-6).map(m=>comp(K,kpiVal(dk,K,m,b))),pts:c*K.w}});
+  table('#t4a',[{k:'t',t:'Chỉ tiêu',f:(v,r)=>`${esc(v)}<span class="hint">${r.lower?'Càng thấp càng tốt':'Càng cao càng tốt'}</span>`},
+    {k:'w',t:'Trọng số',n:1,f:v=>v+'%'},{k:'tg',t:'Mục tiêu',n:1,f:(v,r)=>(r.lower?'≤ ':'')+fmtK(r.K,v)},{k:'ac',t:'Thực hiện',n:1,f:(v,r)=>fmtK(r.K,v)},
+    {k:'c',t:'Hoàn thành',n:1,f:v=>`<span class="prog"><i style="width:${Math.min(100,v/1.2*100)}%"></i></span>${pct(v)}`},
+    {k:'pts',t:'Điểm',n:1,f:v=>fmt(v,1)},{k:'tr',t:'Xu hướng',f:v=>v.length>1?spark(v):'<span class="muted">—</span>'},{k:'st',t:'Trạng thái',f:(v,r)=>status(r.c)}],
+    rows,{sortKey:'w'});
+  // biểu đồ riêng từng phòng
+  const T=$('#c4bT'),S=$('#c4bS');
+  $('#c4bF').hidden=dk!=='mkt';$('#c4bBox').hidden=dk==='mkt';
+  if(dk==='mkt'&&charts.c4b){charts.c4b.destroy();delete charts.c4b}
+  if(dk==='kd'){T.textContent='Doanh số học viên mới so với mục tiêu';S.textContent='Triệu đồng mỗi tháng. Cột cam là tháng đạt mục tiêu, nét đứt là mục tiêu.';
+    const K=D.kpis[0];mk('c4b',{data:{labels:MONTHS.map(m=>m.short),datasets:[
+      {type:'line',label:'Mục tiêu',data:MONTHS.map(m=>Math.round(kpiVal(dk,K,m,b).tg)),borderColor:C[1],borderDash:[5,4],pointRadius:0,borderWidth:1.5},
+      {type:'bar',label:'Thực hiện',data:MONTHS.map(m=>Math.round(kpiVal(dk,K,m,b).ac)),backgroundColor:MONTHS.map(m=>{const v=kpiVal(dk,K,m,b);return v.ac>=v.tg?C[0]:C[2]}),borderRadius:4,maxBarThickness:40}]},
+      options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${fmt(c.raw)} triệu`}}},scales:{x:gridless,y:{ticks:{callback:v=>fmt(v)}}}}});
+  }else if(dk==='mkt'){T.textContent='Phễu tuyển sinh '+M.label;S.textContent='Từ lead đến học viên đăng ký học';
+    const lead=Math.round(kpiVal('mkt',D.kpis[0],M,b).ac),l2t=kpiVal('mkt',D.kpis[2],M,b).ac/100,cr=kpiVal('kd',DEPTS.kd.kpis[2],M,b).ac/100;
+    const st=[['Lead mới',lead],['Đăng ký test',Math.round(lead*l2t)],['Đã test',Math.round(lead*l2t*.82)],['Đăng ký học',Math.round(lead*l2t*.82*cr)]];
+    funnel(st);
+  }else{T.textContent='Tuyển dụng theo khối '+M.label;S.textContent='Số người cần tuyển theo kế hoạch so với số đã tuyển';
+    const {hired,plan}=hirePlan(M,b);
+    mk('c4b',{type:'bar',data:{labels:GKEYS.map(g=>GROUPS[g].name),datasets:[{label:'Kế hoạch',data:plan,backgroundColor:C[2],borderRadius:4,maxBarThickness:24},{label:'Đã tuyển',data:hired,backgroundColor:C[0],borderRadius:4,maxBarThickness:24}]},
+      options:{scales:{x:gridless,y:{ticks:{precision:0}}}}});
+  }
+  // KPI cá nhân
+  const ppl=people(dk,M);$('#t4bT').textContent='KPI cá nhân — '+D.name;
+  $('#t4bS').textContent=dk==='kd'?'Tư vấn tuyển sinh: doanh số so với mục tiêu cá nhân. Xếp loại A từ 100%, B từ 85%, C dưới 85%.':'Điểm KPI cá nhân theo bảng chấm điểm. Xếp loại A từ 100%, B từ 85%, C dưới 85%.';
+  const base=[{k:'name',t:'Họ tên'},{k:'role',t:'Vị trí'},{k:'br',t:'Chi nhánh'}];
+  const tail=[{k:'c',t:'Hoàn thành',n:1,f:v=>`<span class="prog"><i style="width:${Math.min(100,v/1.2*100)}%"></i></span>${pct(v)}`},{k:'g',t:'Xếp loại',f:(v,r)=>{const g=grade(r.c);return`<span class="st ${g==='A'?'ok':g==='B'?'mid':'low'}">${g}</span>`}}];
+  const mid=dk==='kd'?[{k:'tg',t:'Mục tiêu (tr)',n:1,f:v=>fmt(v)},{k:'ac',t:'Doanh số (tr)',n:1,f:v=>fmt(v)},{k:'stu',t:'HV mới',n:1},{k:'cr',t:'Tỷ lệ chốt',n:1,f:v=>pct(v)}]
+    :[{k:'ok',t:'Chỉ tiêu đạt',n:1,f:(v,r)=>v+'/'+r.n}];
+  const host=$('#t4b');host._st=null;
+  table('#t4b',[...base,...mid,...tail],ppl,{sortKey:'c',empty:'Không có nhân sự thuộc phòng này ở chi nhánh đang chọn.'});
+}
+
 /* ================= ĐIỀU HƯỚNG ================= */
-const TITLES={p1:'Cơ cấu nhân sự',p2:'Công & lương',p3:'Tình hình giảng dạy'};
-const RENDER={p1:renderP1,p2:renderP2,p3:renderP3};
+const TITLES={p1:'Cơ cấu nhân sự',p2:'Công & lương',p3:'Tình hình giảng dạy',p4:'Quản lý KPI'};
+const RENDER={p1:renderP1,p2:renderP2,p3:renderP3,p4:renderP4};
 function render(){if(typeof Chart==='undefined')return;$('#pageTitle').textContent=TITLES[state.tab];RENDER[state.tab]()}
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.nav button').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-selected','false')});
