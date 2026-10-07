@@ -153,36 +153,36 @@ td .hint{display:block;font-size:11.5px;color:var(--ink3)}
     <div class="co-meta">Dành cho Ban Giám đốc <span class="tag">Dữ liệu mô phỏng</span></div>
   </div>
   <div class="nav" role="tablist">
-    <button class="on" data-p="p1" role="tab" aria-selected="true">
-      <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2c2.4-.3 4.4 1.2 5 4.3"/></svg>
-      Cơ cấu</button>
-    <button data-p="p2" role="tab" aria-selected="false">
-      <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v5M17.5 9.5v5"/></svg>
-      Công &amp; lương</button>
+    <button class="on" data-p="p5" role="tab" aria-selected="true">
+      <svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M6 15l4-4 3 3 5-6"/><path d="M15 8h3v3"/></svg>
+      Doanh thu</button>
+    <button data-p="p6" role="tab" aria-selected="false">
+      <svg viewBox="0 0 24 24"><path d="M4 18h6M14 18h6M7 18V9M17 18v-6"/><path d="M3 6h18"/><circle cx="12" cy="6" r="1.6"/></svg>
+      Hiệu quả lương</button>
     <button data-p="p3" role="tab" aria-selected="false">
       <svg viewBox="0 0 24 24"><path d="M3 8.5 12 4l9 4.5-9 4.5z"/><path d="M7 10.5v4.8c1.4 1.3 3 2 5 2s3.6-.7 5-2v-4.8"/></svg>
       Giảng dạy</button>
     <button data-p="p4" role="tab" aria-selected="false">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg>
       KPI</button>
-    <button data-p="p5" role="tab" aria-selected="false">
-      <svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M6 15l4-4 3 3 5-6"/><path d="M15 8h3v3"/></svg>
-      Doanh thu</button>
-    <button data-p="p6" role="tab" aria-selected="false">
-      <svg viewBox="0 0 24 24"><path d="M4 18h6M14 18h6M7 18V9M17 18v-6"/><path d="M3 6h18"/><circle cx="12" cy="6" r="1.6"/></svg>
-      Hiệu quả lương</button>
+    <button data-p="p2" role="tab" aria-selected="false">
+      <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v5M17.5 9.5v5"/></svg>
+      Công &amp; lương</button>
+    <button data-p="p1" role="tab" aria-selected="false">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2c2.4-.3 4.4 1.2 5 4.3"/></svg>
+      Cơ cấu</button>
   </div>
 </div>
 
 <div class="filters">
-  <h1 id="pageTitle">Cơ cấu nhân sự</h1>
+  <h1 id="pageTitle">Doanh thu</h1>
   <label class="fg">Tháng <select id="fMonth"></select></label>
   <label class="fg">Chi nhánh <select id="fBranch"><option value="">Tất cả chi nhánh</option></select></label>
 </div>
 
 <main>
   <!-- ============ TAB 1 ============ -->
-  <section class="page on" id="p1">
+  <section class="page" id="p1">
     <p class="lead">Ai đang làm việc ở đâu, theo hình thức nào, gắn bó bao lâu, và đội ngũ đang tăng hay giảm.</p>
     <div class="kpis" id="k1"></div>
     <div class="grid">
@@ -251,7 +251,7 @@ td .hint{display:block;font-size:11.5px;color:var(--ink3)}
   </section>
 
   <!-- ============ TAB 5 ============ -->
-  <section class="page" id="p5">
+  <section class="page on" id="p5">
     <p class="lead">Doanh thu học phí ghi nhận theo giờ học thực tế, đặt cạnh quỹ lương và chi phí giáo viên để thấy mỗi đồng lương đang mang về bao nhiêu.</p>
     <div class="kpis" id="k5"></div>
     <div class="grid">
@@ -680,7 +680,7 @@ const pct=(v,d=0)=>fmt(v*100,d)+'%';
 const dmy=d=>d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-const state={m:MONTHS.length-1,b:'',tab:'p1',onlyWarn:false,dept:'mkt',lowMargin:false,mech:null};
+const state={m:MONTHS.length-1,b:'',tab:'p5',onlyWarn:false,dept:'mkt',lowMargin:false,mech:null};
 const inBranch=e=>!state.b||e.branch===state.b;
 const empsEnd=M=>EMP.filter(e=>inBranch(e)&&activeEnd(e,M));
 const empsIn=M=>EMP.filter(e=>inBranch(e)&&activeIn(e,M));
@@ -1148,7 +1148,7 @@ document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.nav button').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-selected','false')});
   b.classList.add('on');b.setAttribute('aria-selected','true');
   document.querySelectorAll('.page').forEach(p=>p.classList.toggle('on',p.id===b.dataset.p));
-  state.tab=b.dataset.p;try{localStorage.setItem('jolo-tab',state.tab)}catch(e){}render();
+  state.tab=b.dataset.p;try{localStorage.setItem('jolo-tab2',state.tab)}catch(e){}render();
 });
 const fm=$('#fMonth');MONTHS.forEach(m=>fm.add(new Option(m.label,m.i)));fm.value=state.m;
 fm.onchange=()=>{state.m=+fm.value;render()};
@@ -1161,7 +1161,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',rend
 function boot(){
   if(typeof Chart!=='undefined')Chart.register(REF_LINES);
   if(typeof Chart==='undefined'){document.querySelector('main').innerHTML='<div class="empty">Không tải được thư viện biểu đồ. Kiểm tra kết nối mạng rồi tải lại trang.</div>';return}
-  let t=null;try{t=localStorage.getItem('jolo-tab')}catch(e){}
+  let t=null;try{t=localStorage.getItem('jolo-tab2')}catch(e){}
   if(t&&TITLES[t]){const b=document.querySelector(`.nav button[data-p="${t}"]`);if(b){b.click();return}}
   render();
 }
